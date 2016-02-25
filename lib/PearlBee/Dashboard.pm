@@ -3,13 +3,17 @@ use Dancer2 appname => 'PearlBee';
 use Dancer2::Plugin::DBIC;
 use Dancer2::Plugin::Auth::Tiny;
 
-use PearlBee::Password;
-use PearlBee::Dashboard::Posts;
-use PearlBee::Dashboard::Users;
-use PearlBee::Dashboard::Comments;
-use PearlBee::Dashboard::Categories;
-use PearlBee::Dashboard::Tags;
-use PearlBee::Dashboard::Settings;
+# the dashboard only makes sens for logged in users
+if ( !$PearlBee::is_static ) {
+
+# do not load in static context
+require PearlBee::Password;
+require PearlBee::Dashboard::Posts;
+require PearlBee::Dashboard::Users;
+require PearlBee::Dashboard::Comments;
+require PearlBee::Dashboard::Categories;
+require PearlBee::Dashboard::Tags;
+require PearlBee::Dashboard::Settings;
 
 # it is how we're using Auth::Tiny in the code
 # so we configure it in the code as well
@@ -112,5 +116,7 @@ prefix '/dashboard' => sub {
         redirect '/dashboard/edit';
     };
 };
+
+}
 
 1;
